@@ -35,11 +35,11 @@ import eu.senseable.service.ISparkService;
  */
 
 public class Spark {
+    private final String pkg = "eu.senseable.companion";
     private final SparkServiceConnection mConn;
     private final Callbacks callbacks;
     private final Handler mHandler;
     private final Intent mServiceIntent;
-    private final String pkg = "eu.senseable.companion";
     private boolean mServiceBound = false;
 
     /** Bitfield values for transporting the status of the Spark Service to clients.
@@ -152,28 +152,28 @@ public class Spark {
 
     /** return a list of stored events on the device.
      *
-     * @return list of SparkEvents designating the smoking instances
+     * @return list of Spark Events  designating the smoking instances
      * @throws RemoteException
      */
-    public List<SparkEvent> getEvents() throws RemoteException {
+    public List<Event> getEvents() throws RemoteException {
         List<String> jsons = getJSONEvents();
-        ArrayList<SparkEvent> s = new ArrayList<>(jsons.size());
+        ArrayList<Event> s = new ArrayList<>(jsons.size());
 
         for (String json : jsons)
-            s.add(new SparkEvent(json));
+            s.add(new Event(json));
 
         return s;
     }
 
     /** set the currently list of events stored on the device.
      *
-     * @param events list of SparkEvents
+     * @param events list of Spark Events
      * @throws RemoteException
      */
-    public void setEvents(List<SparkEvent> events) throws RemoteException {
+    public void setEvents(List<Event> events) throws RemoteException {
         List<String> jsons = new ArrayList<>(events.size());
 
-        for (SparkEvent e : events)
+        for (Event e : events)
             jsons.add(e.toJSON());
 
         setJSONEvents(jsons);
@@ -206,18 +206,18 @@ public class Spark {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callbacks.onEventsChanged(events);
+                    callbacks.onJSONEventsChanged(events);
                 }
             });
 
-            final LinkedList<SparkEvent> sparks = new LinkedList<>();
+            final LinkedList<Event> sparks = new LinkedList<>();
             for (String json : events)
-                sparks.add(new SparkEvent(json));
+                sparks.add(new Event(json));
 
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callbacks.onSparkEventsChanged(sparks);
+                    callbacks.onEventsChanged(sparks);
                 }
             });
         }
@@ -272,17 +272,17 @@ public class Spark {
          * for some external reason). The current "version" of the events list is attached to
          * this function. Events are stored as ISO-formatted Date Strings.
          *
-         * @param events list of JSONObject packed as strings, these objects contain a starttime
-         *               endtime and an id for each event. Times are encoded as ISO-standard times.
+         * @param events list of JSONObject packed as strings, these objects contain a beg, end,
+         *               and an id for each event. Times are encoded as ISO-standard times.
          */
-        public void onEventsChanged(List<String> events);
+        public void onJSONEventsChanged(List<String> events);
 
         /**
-         * The same as onEventsChanged, but events are returned as SparkEvent objects.
+         * The same as onEventsChanged, but events are returned as Spark Event objects.
          *
-         * @param events list of SparkEvents
+         * @param events list of Spark Events
          */
-        public void onSparkEventsChanged(List<SparkEvent> events);
+        public void onEventsChanged(List<Event> events);
 
         /**
          *  called when a Spark is seen, while no address has been set yet. This only works
@@ -313,8 +313,8 @@ public class Spark {
         public class Stub implements Callbacks {
             public void onReady() {}
             public void onDestroy() {}
-            public void onEventsChanged(List<String> events) {}
-            public void onSparkEventsChanged(List<SparkEvent> events) {}
+            public void onJSONEventsChanged(List<String> events) {}
+            public void onEventsChanged(List<Event> events) {}
             public void onNewSpark(String addr) {}
             public void onBrownout(boolean batEmpty) {}
             public void onStatusChanged(int status) {}
@@ -322,13 +322,13 @@ public class Spark {
 
     }
 
-    public class SparkEvent {
+    public class Event {
         private final DateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
 
         public Date beg, end;
         public long sid;
 
-        public SparkEvent(String json) {
+        public Event(String json) {
             try {
                 JSONObject obj = new JSONObject(json);
                 beg = iso.parse(obj.getString("beg"));
