@@ -33,6 +33,14 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+task copyTask (dependsOn: build, type: Copy) {
+    new File('docs/').mkdir();
+    from 'build/docs/javadoc'
+    into 'docs/'
+}
+
+copyTask.shouldRunAfter build
+
 ext {
     PUBLISH_GROUP_ID = 'eu.senseable'
     PUBLISH_ARTIFACT_ID = 'sparklib'
