@@ -9,14 +9,14 @@ will be presented with a prompt to install the companion App.
 
 # Installation
 
- For gradle builds you can use npm to resolve the dependency by adding a 
+ For gradle builds you can use npm to resolve the dependency by adding a
 
     dependencies {
         compile 'eu.senseable:sparklib:1.0.1'
     }
 
- to your build.gradle file.
+ to the build.gradle file of your application.
 
 # Usage
 
- The interface is fully defined in the '''Spark''' class...
+ The interface is fully defined in the `Spark` class...
