@@ -53,6 +53,7 @@ dependencies {
 }
 
 task copyTask (dependsOn: build, type: Copy) {
+    delete 'docs/'
     from 'build/docs/javadoc'
     into 'docs/'
 }
