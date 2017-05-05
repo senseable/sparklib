@@ -46,8 +46,8 @@ public class Spark {
      * When adding to this field make sure to add powers of two.
      */
     public interface Status {
-        int RUNNING = 1,
-            BLUETOOTH_DISABLED = 2;
+        int RUNNING = 1<<0,
+            BLUETOOTH_DISABLED = 1<<1;
     }
 
 
