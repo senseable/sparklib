@@ -25,6 +25,10 @@ will be presented with a prompt to install the companion App.
       mSpark = new Spark(this, mSparkCalls);
     }
     
+    public void onDestroy() {
+      mSpark.close();
+    }
+    
     private Spark.Callbacks mSparkCalls = new Spark.Callbacks.Stub() {
       public void onEventsChanged(List<Spark.Event> events) {
          if (events.size() == 0)
