@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import eu.senseable.service.ISparkCallback;
 import eu.senseable.service.ISparkService;
@@ -329,6 +330,8 @@ public class Spark {
         public long sid;
 
         public Event(String json) {
+            iso.setTimeZone(TimeZone.getTimeZone("UTC")); // TODO test with this
+
             try {
                 JSONObject obj = new JSONObject(json);
                 beg = iso.parse(obj.getString("beg"));
