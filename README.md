@@ -11,9 +11,8 @@ will be presented with a prompt to install the companion App.
 
  For gradle builds you can use npm to resolve the dependency by adding a
 
-    dependencies {
-        compile 'eu.senseable:sparklib:1.2.1'
-    }
+    repositories { jcenter() }
+    dependencies { compile 'eu.senseable:sparklib:1.2.1'  }
 
  to the build.gradle file of your application.
 
@@ -24,6 +23,10 @@ will be presented with a prompt to install the companion App.
  
     public void onCreate() {
       mSpark = new Spark(this, mSparkCalls);
+    }
+    
+    public void onDestroy() {
+      mSpark.close();
     }
     
     private Spark.Callbacks mSparkCalls = new Spark.Callbacks.Stub() {
