@@ -12,7 +12,7 @@ will be presented with a prompt to install the companion App.
  For gradle builds you can use npm to resolve the dependency by adding a
 
     repositories { jcenter() }
-    dependencies { compile 'eu.senseable:sparklib:1.2.2'  }
+    dependencies { compile 'eu.senseable:sparklib:1.2.3'  }
 
  to the build.gradle file of your application.
 

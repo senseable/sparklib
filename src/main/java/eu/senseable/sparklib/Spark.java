@@ -323,7 +323,7 @@ public class Spark {
 
     }
 
-    public class Event {
+    public static class Event {
         private final DateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
 
         public Date beg, end;
